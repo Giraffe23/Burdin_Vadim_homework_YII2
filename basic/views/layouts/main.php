@@ -41,6 +41,7 @@ echo Nav::widget([
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => 'KNIVES', 'url' => ['/knives/index']],
         ['label' => 'PRODUCT', 'url' => ['/product/index']],
         ['label' => 'DELIVERY', 'url' => ['/delivery/index']],
         Yii::$app->user->isGuest ? (
