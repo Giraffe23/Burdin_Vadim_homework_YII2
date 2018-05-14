@@ -18,9 +18,21 @@ class Knives extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
     public static function tableName()
     {
         return 'knives';
+    }
+    
+    public function scenarios() 
+    {
+        return [
+            self::SCENARIO_DEFAULT => ['name'],
+            self::SCENARIO_CREATE => ['name', 'price', 'description', 'createdAt'],
+            self::SCENARIO_UPDATE => ['price', 'description', 'createdAt'],
+        ];
     }
 
     /**
@@ -29,9 +41,15 @@ class Knives extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['price', 'createdAt'], 'integer'],
-            [['name'], 'string', 'max' => 50],
-            [['description'], 'string', 'max' => 1000],
+            ['name', 'required', 'on' => self::SCENARIO_CREATE],
+            ['name', 'string', 'max' => 20],
+            ['name', 'filter', 'filter' => function ($value) {
+                return strip_tags(trim($value));
+            }],
+            ['price', 'integer', 'min' => 0, 'max' => 1000 /*,'on' => 'update'*/],
+            ['description', 'string', 'max' => 1200],
+            [['createdAt'], 'integer'],
+            //['id', 'safe'],
         ];
     }
 
