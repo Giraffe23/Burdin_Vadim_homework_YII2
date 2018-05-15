@@ -46,7 +46,7 @@ class Knives extends \yii\db\ActiveRecord
             ['name', 'filter', 'filter' => function ($value) {
                 return strip_tags(trim($value));
             }],
-            ['price', 'integer', 'min' => 0, 'max' => 1000 /*,'on' => 'update'*/],
+            ['price', 'integer', 'min' => 1, 'max' => 999 /*,'on' => 'update'*/],
             ['description', 'string', 'max' => 1200],
             [['createdAt'], 'integer'],
             //['id', 'safe'],
