@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
-use app\models\Knives;
-use app\models\Product;
 use yii\base\BaseObject;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use app\models\Knives;
+use yii\db\Connection;
+use yii\db\Expression;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 
 class A extends BaseObject
@@ -27,7 +29,62 @@ class ProductController extends Controller
 {
     public function actionIndex()
     {
-        //$obj       = new A();
+        /*------------3-----------------*/
+
+        //\Yii::$app->db->createCommand()->insert('user', ['username' => 'Giraffe', 'name' => 'Vadim', 'surname' => 'Burdin', 'password_hash' => 555])->execute();
+        //\Yii::$app->db->createCommand()->insert('user', ['username' => 'Arny', 'name' => 'Arnold', 'surname' => 'Strong', 'password_hash' => 999])->execute();
+        //\Yii::$app->db->createCommand()->insert('user', ['username' => 'Beard', 'name' => 'Leo', 'surname' => 'Tolstoy', 'password_hash' => 777])->execute();
+
+        /*------------4-----------------*/
+
+        $queryUser_id_1 = (new Query())->from('user')->where(['id' => 1]);
+        $queryUser_sort = (new Query())->from('user')->where(['>', 'id', 1])->orderBy(['name' => SORT_ASC]);
+        $queryUser_count = (new Query())->from('user')->select(['Количество юзеров' => 'count(*)']);
+
+        //_end($queryUser_id_1->all());
+        //_end($queryUser_count->one());
+        //_end($queryUser_sort->all());
+
+        /*------------5-----------------*/
+        
+        /*
+        \Yii::$app->db->
+        createCommand()->batchInsert('note', ['text', 'creator_id', 'created_at'], [
+            ['Hello!', 1, 12321],
+            ['Hi!', 3, 12354],
+            ["What's up?", 4, 45666414],
+        ])->execute();
+        */
+
+        /*------------6-----------------*/
+
+        $query = (new Query())->from('note');
+
+        _end($query->innerJoin('user', 'note.creator_id = user.id')->select([
+            'Текст сообщения' => 'note.text', 
+            'Имя' => 'user.name', 
+            'Фамилия' => 'user.surname', 
+            'Логин' => 'user.username'
+        ])->all());
+        
+        
+        
+        /*================================-This is the end-=================================================*/
+
+
+       
+        
+    return $this->render('index', [
+        'model' => new Knives(),
+    ]);
+     
+    }
+}
+
+ //_end($queryUser_count->one());
+        //_end($queryUser_sort->all());
+
+        //$obj = new A();
         //$obj->prop = 233;
         //return $obj->prop;
         //exit();
@@ -43,24 +100,41 @@ class ProductController extends Controller
         //return VarDumper::dumpAsString(ArrayHelper::getValue($models, '2.description'), 5, true);
         /*
         return VarDumper::dumpAsString(ArrayHelper::getColumn($models, function ($info) {
-            return '***' . $info['name'] . $info['id'] . '***';
-            }), 5, true);
-        */
-    
+        return '***' . $info['name'] . $info['id'] . '***';
+        }), 5, true);
+         */
         /*
         return ArrayHelper::getValue($model->getAttributes(), function ($model) {
         return '***' . $model['name'] . $model['id'] . '***';
         });
          */
-       //var_dump($model->validate());
-      
-       //$model->validate();
-       //var_dump($model->getErrors());
-       $model = new Knives();
-       $model->setAttributes(['id' => 1, 'name' => 'moraknivRobust', 'price' => 900]);
+        //var_dump($model->validate());
+        //$model->validate();
+        //var_dump($model->getErrors());
+        //$model = new Knives();
+        //$model->setAttributes(['id' => 1, 'name' => 'moraknivRobust', 'price' => 900]);
+        //\Yii::info(VarDumper::dumpAsString($model), 'congratulations');
+        //\Yii::info('hello', 'congratulations');
+        //_log($model);
+        //_end($model);
+        //$id = 10;
+        //_end(\Yii::$app->db->createCommand('SELECT [[name]], [[id]] FROM {{knives}} WHERE id<:id', [':id' => $id])->queryAll());
+        //_end(\Yii::$app->db->createCommand()->insert('knives', ['name' =>'razor', 'price' =>555])->execute());
+        /*
+        _end(\Yii::$app->db->
+        createCommand()->batchInsert('knives', ['name', 'price'], [
+        ['knive_1', 333],
+        ['knive_2', 303],
+        ['knive_3', 330],
+        ])->execute());
+         */
+        /*
+        _end(\Yii::$app->db->
+        createCommand()->delete('x', 'id>::$id', [':id' => $id])->execute());
+         */
 
-        return $this->render('index', [
-            'model' => $model,
-        ]);
-    }
-}
+        //$queryUser = (new Query())->from('knives')->select('count(*)');
+        //$query = (new Query())->from('knives')->select(['Название'=>'name', 'Цена'=>'price', 'cnt' => $queryUser])->where(['>', 'id', 1] /*['id' => [1, 4, 5]]'id>:id', [':id' => 1]*/)->orderBy(['name' => SORT_ASC]);
+        //_end($query->all());
+
+        //$transaction = \Yii::$app->db->beginTransaction();

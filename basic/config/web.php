@@ -42,6 +42,12 @@ $config = [
                     'class'  => yii\log\FileTarget::class, //'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class'    => yii\log\FileTarget::class, 
+                    'logFile'  => '@runtime/logs/congratulations.log',
+                    //'levels' => ['error', 'warning'],
+                    'categories' => ['congratulations'],
+                ],
             ],
         ],
         'db'           => $db,
