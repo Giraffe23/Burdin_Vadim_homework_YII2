@@ -39,10 +39,10 @@ class ProductController extends Controller
 
         $queryUser_id_1 = (new Query())->from('user')->where(['id' => 1]);
         $queryUser_sort = (new Query())->from('user')->where(['>', 'id', 1])->orderBy(['name' => SORT_ASC]);
-        $queryUser_count = (new Query())->from('user')->select(['Количество юзеров' => 'count(*)']);
+        $queryUser_count = (new Query())->from('user');//->count();//select(['Количество юзеров' => 'count(*)']);
 
         //_end($queryUser_id_1->all());
-        //_end($queryUser_count->one());
+        _end($queryUser_count->count());
         //_end($queryUser_sort->all());
 
         /*------------5-----------------*/
