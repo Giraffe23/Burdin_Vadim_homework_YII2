@@ -4,7 +4,7 @@ namespace app\models;
 
 use yii\base\Model;
 
-class Product extends Model
+class Test extends Model
 {
     public $id;
     public $name;

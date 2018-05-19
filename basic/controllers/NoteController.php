@@ -2,17 +2,17 @@
 
 namespace app\controllers;
 
-use app\models\Knives;
 use Yii;
+use app\models\Note;
 use yii\data\ActiveDataProvider;
-use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
 /**
- * KnivesController implements the CRUD actions for Knives model.
+ * NoteController implements the CRUD actions for Note model.
  */
-class KnivesController extends Controller
+class NoteController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class KnivesController extends Controller
     {
         return [
             'verbs' => [
-                'class'   => VerbFilter::className(),
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -30,15 +30,14 @@ class KnivesController extends Controller
     }
 
     /**
-     * Lists all Knives models.
+     * Lists all Note models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Knives::find(),
+            'query' => Note::find(),
         ]);
-        $dataProvider->pagination->pageSize = 2;
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -46,7 +45,7 @@ class KnivesController extends Controller
     }
 
     /**
-     * Displays a single Knives model.
+     * Displays a single Note model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,15 +58,13 @@ class KnivesController extends Controller
     }
 
     /**
-     * Creates a new Knives model.
+     * Creates a new Note model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Knives();
-
-        $model->scenario = Knives::SCENARIO_CREATE;
+        $model = new Note();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -79,7 +76,7 @@ class KnivesController extends Controller
     }
 
     /**
-     * Updates an existing Knives model.
+     * Updates an existing Note model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -88,8 +85,6 @@ class KnivesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
-        $model->scenario = Knives::SCENARIO_UPDATE;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -101,7 +96,7 @@ class KnivesController extends Controller
     }
 
     /**
-     * Deletes an existing Knives model.
+     * Deletes an existing Note model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -115,15 +110,15 @@ class KnivesController extends Controller
     }
 
     /**
-     * Finds the Knives model based on its primary key value.
+     * Finds the Note model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Knives the loaded model
+     * @return Note the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Knives::findOne($id)) !== null) {
+        if (($model = Note::findOne($id)) !== null) {
             return $model;
         }
 
