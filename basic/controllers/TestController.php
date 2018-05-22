@@ -4,7 +4,8 @@ namespace app\controllers;
 
 use yii\base\BaseObject;
 use yii\web\Controller;
-use app\models\Knives;
+use app\models\Test;
+use app\models\User;
 use yii\db\Connection;
 use yii\db\Expression;
 use yii\db\Query;
@@ -25,10 +26,40 @@ class A extends BaseObject
 
 }
 
-class ProductController extends Controller
+class TestController extends Controller
 {
     public function actionIndex()
     {
+        /*
+        $values = [
+            'username' => 'Pilot',
+            'name' => 'Joseph',
+            'surname' => 'Heller',
+            'password_hash' => '323232',
+        ];
+        $user = new User();
+        $user->attributes = $values;
+        _log($user->save());
+        */
+        /*
+        $user = new User();
+        $user->username = 'Dubliner';
+        $user->name = 'James';
+        $user->surname = 'Joice';
+        $user->password_hash = '232323';
+        _end($user->save());
+        */
+        /*
+        $user = User::findOne(1);
+        _end($user->getNotes()->asArray()->all());
+        */
+        
+        /*
+        \Yii::$app->db->createCommand()-> addForeignKey('fx_access_user', 'access', ['user_id'], 'user', ['id'])->execute();
+        \Yii::$app->db->createCommand()-> addForeignKey('fx_access_note', 'access', ['note_id'], 'note', ['id'])->execute();
+        \Yii::$app->db->createCommand()-> addForeignKey('fx_note_user', 'note', ['creator_id'], 'user', ['id'])->execute(); 
+        */
+
         /*------------3-----------------*/
 
         //\Yii::$app->db->createCommand()->insert('user', ['username' => 'Giraffe', 'name' => 'Vadim', 'surname' => 'Burdin', 'password_hash' => 555])->execute();
@@ -42,7 +73,7 @@ class ProductController extends Controller
         $queryUser_count = (new Query())->from('user');//->count();//select(['Количество юзеров' => 'count(*)']);
 
         //_end($queryUser_id_1->all());
-        _end($queryUser_count->count());
+        //_end($queryUser_count->count());
         //_end($queryUser_sort->all());
 
         /*------------5-----------------*/
@@ -57,7 +88,7 @@ class ProductController extends Controller
         */
 
         /*------------6-----------------*/
-
+/*
         $query = (new Query())->from('note');
 
         _end($query->innerJoin('user', 'note.creator_id = user.id')->select([
@@ -66,8 +97,7 @@ class ProductController extends Controller
             'Фамилия' => 'user.surname', 
             'Логин' => 'user.username'
         ])->all());
-        
-        
+ */
         
         /*================================-This is the end-=================================================*/
 
@@ -75,7 +105,7 @@ class ProductController extends Controller
        
         
     return $this->render('index', [
-        'model' => new Knives(),
+        'model' => new Test(),
     ]);
      
     }
@@ -136,5 +166,9 @@ class ProductController extends Controller
         //$queryUser = (new Query())->from('knives')->select('count(*)');
         //$query = (new Query())->from('knives')->select(['Название'=>'name', 'Цена'=>'price', 'cnt' => $queryUser])->where(['>', 'id', 1] /*['id' => [1, 4, 5]]'id>:id', [':id' => 1]*/)->orderBy(['name' => SORT_ASC]);
         //_end($query->all());
-
-        //$transaction = \Yii::$app->db->beginTransaction();
+/*
+        Yii::$app->db->transaction(function($db) {
+            $db->createCommand($sql1)->execute();
+            $db->createCommand($sql2)->execute();
+        }
+*/
