@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "note".
@@ -14,12 +15,14 @@ use Yii;
  *
  * @property Access[] $accesses
  * @property User $creator
+ * 
+ * @mixin TimestampBehavior
  */
 class Note extends \yii\db\ActiveRecord
 {
-    
-    const RELATION_USER = 'сreator';
-    const RELATION_ACCESSES = 'accesses';
+
+    const RELATION_USER           = 'сreator';
+    const RELATION_ACCESSES       = 'accesses';
     const RELATION_ACCESSED_USERS = 'accessUsers';
 
     /**
@@ -43,14 +46,26 @@ class Note extends \yii\db\ActiveRecord
         ];
     }
 
+//-----------------------------Задание 1-----------------------------------------
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'updatedAtAttribute' => false
+            ],
+        ];
+    }
+//-------------------------------------------------------------------------------
+
     /**
      * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'text' => 'Text',
+            'id'         => 'ID',
+            'text'       => 'Text',
             'creator_id' => 'Creator ID',
             'created_at' => 'Created At',
         ];
@@ -72,8 +87,7 @@ class Note extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'creator_id']);
     }
 
-    //--------------------------------------6-----------------------------------------
-     /**
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getAccessUsers()
@@ -81,8 +95,6 @@ class Note extends \yii\db\ActiveRecord
         return $this->hasMany(User::class, ['id' => 'user_id'])
             ->via(self::RELATION_ACCESSES);
     }
-    //------------------------------------------------------------------------------
-
     /**
      * {@inheritdoc}
      * @return \app\models\query\NoteQuery the active query used by this AR class.
