@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function actionTest()
     {
-    //----------------------------------ЗАДАНИЕ 4А------------------------------------
+    //-------------------------------------------------------------------------------
         
         $user = new User();
         $user->username = 'Pilot';
@@ -52,7 +52,7 @@ class UserController extends Controller
         _end($user->notes);
         */
     
-    //-------------------------------ЗАДАНИЕ 4Б-------------------------------------
+    //-------------------------------------------------------------------------------
         /*
         $user = User::findOne(3);
         $note = new Note();
@@ -70,25 +70,25 @@ class UserController extends Controller
         $note->text = 'ПУМС!';
         //$note->link('creator', $user2);
 
-    //-------------------------------ЗАДАНИЕ 4В-------------------------------------
+    //-------------------------------------------------------------------------------
 
         $usersWithNotes = User::find()->with([User::RELATION_NOTES])->where(['<', 'id', 5])->asArray()->all();
         //_log($usersWithNotes);
 
     
 
-    //-------------------------------ЗАДАНИЕ 4Г-------------------------------------
+    //------------------------------------------------------------------------------
 
          $usersWithNotes = User::find()->joinWith([User::RELATION_NOTES])->asArray()->all();
          //_log($usersWithNotes);
          //_end($usersWithNotes[0]);
 
-    //-------------------------------ЗАДАНИЕ 5--------------------------------------
+    //-------------------------------------------------------------------------------
 
        //_end(User::findOne(1)->getAccessedNotes()->asArray()->all());
 
         
-    //-------------------------------ЗАДАНИЕ 6-------------------------------------
+    //-------------------------------------------------------------------------------
 
         $user = User::findOne(1);
         $note = Note::findOne(6);
@@ -133,6 +133,8 @@ class UserController extends Controller
             'query' => User::find(),
         ]);
 
+        $dataProvider->pagination->pageSize = 10;
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
@@ -160,6 +162,8 @@ class UserController extends Controller
     {
         $model = new User();
 
+        $model->scenario = User::SCENARIO_CREATE;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -179,6 +183,8 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        $model->scenario = User::SCENARIO_UPDATE;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

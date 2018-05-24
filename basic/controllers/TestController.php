@@ -6,6 +6,7 @@ use yii\base\BaseObject;
 use yii\web\Controller;
 use app\models\Test;
 use app\models\User;
+use app\models\Note;
 use yii\db\Connection;
 use yii\db\Expression;
 use yii\db\Query;
@@ -30,6 +31,18 @@ class TestController extends Controller
 {
     public function actionIndex()
     {
+        
+        $note = new Note();
+        $note->text = 'testing behaviors';
+        $note->creator_id = 1;
+        //$note->save();
+        /*
+        $user = User::findOne(5);
+        $user->username = 'schwarz';
+        $user->save();
+        */
+        
+        
         /*
         $values = [
             'username' => 'Pilot',
