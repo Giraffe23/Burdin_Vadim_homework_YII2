@@ -62,6 +62,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['created_at', 'updated_at'], 'integer'],
             [['username', 'name', 'surname', 'password', 'password_repeat', 'access_token', 'auth_key'], 'string', 'max' => 255],
             ['password', 'compare', 'compareAttribute' => 'password_repeat'],
+            [['password', 'password_repeat'], 'required', 'on' => self::SCENARIO_CREATE],
         ];
     }
 
