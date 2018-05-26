@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 23 2018 г., 12:11
+-- Время создания: Май 26 2018 г., 21:34
 -- Версия сервера: 5.7.20
 -- Версия PHP: 7.2.0
 
@@ -41,7 +41,15 @@ CREATE TABLE `access` (
 INSERT INTO `access` (`id`, `note_id`, `user_id`) VALUES
 (1, 5, 1),
 (2, 2, 1),
-(3, 6, 1);
+(4, 18, 2),
+(5, 12, 32),
+(6, 20, 32),
+(8, 8, 1),
+(11, 17, 21),
+(12, 20, 19),
+(13, 16, 30),
+(14, 1, 25),
+(15, 23, 20);
 
 -- --------------------------------------------------------
 
@@ -85,15 +93,18 @@ INSERT INTO `note` (`id`, `text`, `creator_id`, `created_at`) VALUES
 (1, 'Hello!', 1, 12321),
 (2, 'Hi!', 3, 12354),
 (3, 'What\'s up?', 4, 45666414),
-(4, 'Very well!', 1, 1232154),
 (5, 'Good job!', 2, 1265577858),
 (6, 'just do it now!', 3, 1233458),
 (7, 'We are who we choose to be', 2, NULL),
 (8, 'The best reading is re-reading', 3, NULL),
-(9, 'ПИНС!', 1, NULL),
 (12, 'testing behaviors', 1, 1526981930),
-(13, 'testing behaviors', 1, 1526997276),
-(14, 'testing behaviors', 1, 1527009816);
+(16, 'Круто!!!', 1, 1527278735),
+(17, 'successfully loaded', 1, 1527279700),
+(18, 'wonderful', 1, 1527279734),
+(20, 'Что-то пошло не так!', 1, 1527347701),
+(21, 'Note from Luntik', 21, 1527350439),
+(22, 'balance', 1, 1527354398),
+(23, 'Guten abend, mein Freund!', 1, 1527355935);
 
 -- --------------------------------------------------------
 
@@ -125,21 +136,20 @@ INSERT INTO `user` (`id`, `username`, `name`, `surname`, `password_hash`, `acces
 (5, 'terminator', 'Arnold', 'Strong', '$2y$13$CPXrKcbg/ZOAJJ2ha6UDFuzOR/0HOKh7HW7mdvmmg8ZUwk/sElAm.', NULL, NULL, NULL, 1527060960),
 (6, 'NHL', 'Alexandr', 'Ovechkin', '$2y$13$JRwJ8h/AujPtczh/DQq5AuvQGpT2xbxtuwQ9/lJhUrg4/Y1UR4cN2', NULL, NULL, NULL, 1527061006),
 (7, 'Leo', 'Leo', 'Tolstoy', '$2y$13$nP2.TybzFiZXBGwhd.5pAOhzmU5I0p16H3D/F.ycHT15880K1UT1a', NULL, NULL, NULL, 1527060875),
-(8, 'Spiderman', 'Nikolai', 'Sididomanegulaj\r\n', '777', NULL, NULL, NULL, NULL),
-(9, 'Dubliner', 'James', 'Joice', '232323', NULL, NULL, NULL, NULL),
-(10, 'Rodrigez', 'James', 'Rodrigez', '$2y$13$hMLOc9bbmYayQjtCgGgWEe07eNGxdZQ45AqPLqQ7IBzYlU6B3jI8C', '', '', NULL, NULL),
-(11, 'Pilot', 'Joseph', 'Heller', '323232', NULL, NULL, NULL, NULL),
-(12, 'SpacePilot', 'Luke', 'Skywalker', '555555', '', '', NULL, NULL),
-(13, 'Pilot', 'Joseph', 'Heller', '323232', NULL, NULL, NULL, NULL),
-(14, 'Cuckoo\\\'s nest', 'Ken', 'Kesey', '33333', NULL, NULL, NULL, NULL),
+(10, 'Rodrigez', 'James', 'RodrigeZZ', '$2y$13$hMLOc9bbmYayQjtCgGgWEe07eNGxdZQ45AqPLqQ7IBzYlU6B3jI8C', '', '', NULL, 1527148195),
 (19, 'mariangel', 'Maria', 'Angel', '$2y$13$OYyLgu2RLbdF/UPkZGspsepQ4LQoY0MwLY97caj6Q8zTq2hbjb7tm', NULL, '57MRViwS0RMo5SH2Q02w6HDzqnjQjM6Y', 1527014910, 1527015821),
 (20, 'mama', 'Natasha', 'Great', '$2y$13$m8Y6/.S/crHbtbyDVJfqI.Nn14B1Y5bmycO1cntGD.wyqbZVl.17.', NULL, '7Ta5u9Skm768YqIP02-bsbQ7CW__ph0_', 1527015083, 1527015751),
 (21, 'Luntik', 'Luntik', 'Luntik', '$2y$13$JeQiQMuVC9bw.RLtOqkYC.HTyeTaHVOKUMw6P6kr9QResrk5AS.nO', NULL, '2lLRsoFpEJ6xwPMFTQtbA-t97TFMxi8l', 1527015874, 1527015874),
 (22, 'max', 'max', 'max', '$2y$13$UhJoiIVkRxX1ukDz17LxLuKvUy7iV0MJXzhesQKHaNejbVA7snUsi', NULL, '7KZTja2o3lDFjEKvm0DiW9MBsahJ1jpT', 1527021539, 1527021539),
 (23, 'nik', 'nik', 'nik', '$2y$13$670eqnvm7PmYmWEronY2jOGxXje9CcQvy.SR4h2lhys.S2ULX0c2y', NULL, 'Z1kCwZBNFWLgbtErv4gggvn7tPyHZLFN', 1527021641, 1527021641),
-(25, 'nike', 'nike', 'borzov', '$2y$13$ASM3AYyKB09BqGNV0/MDj.2NlRVZjsxcdHdFAq3JEqtcqvcBAbiVy', NULL, 'f0_jQRKPLkotUtHK2daTG9mOnoFGeICE', 1527021846, 1527021846),
+(25, 'Nike', 'Nike', 'Borzov', '$2y$13$ASM3AYyKB09BqGNV0/MDj.2NlRVZjsxcdHdFAq3JEqtcqvcBAbiVy', NULL, 'f0_jQRKPLkotUtHK2daTG9mOnoFGeICE', 1527021846, 1527345015),
 (27, 'gik', 'ghjdk', 'sdf', '$2y$13$tPfIyW6jUaLcHHWR9iOYxOZaQXpe8VEaM22KdxySkN.jXT2wl7422', NULL, 'Kv3vFF9hi9mn-pwG89fWnvZtiZylT8Tz', 1527060442, 1527060442),
-(29, 'new', 'gfdskljf', 'adf', '$2y$13$k1tnl7URok3ZBMoKLqogleTeaAQLD2OZOrYiVBHn0WLMySslSAs6m', NULL, 'GAkCX1GGAJdj6OYwEIGnAaKDWxQVcDXn', 1527064317, 1527064317);
+(29, 'new', 'gfdskljf', 'adf', '$2y$13$k1tnl7URok3ZBMoKLqogleTeaAQLD2OZOrYiVBHn0WLMySslSAs6m', NULL, 'GAkCX1GGAJdj6OYwEIGnAaKDWxQVcDXn', 1527064317, 1527064317),
+(30, 'nike', 'Maria', 'Friend', '$2y$13$7wuSji7CKwli1j2.2ntroOpV6lfXBy5OyTwvZBjgVUQPkVHsyLwla', NULL, '3lUVKW81HepXZgOu39hiE71dWygGLWQ3', 1527148374, 1527148393),
+(31, 'new', 'adidas', 'Skywalker', '$2y$13$EZQEkYtxdooGsHAlo7sQLefpqPP5WAl/5CcItQodBBDRoSrCy29gm', NULL, 'RXs9vJfJAxF3wxnze7B_DXj0JQh1sSt2', 1527148615, 1527148630),
+(32, 'Uber', 'Van', 'Dammy', '$2y$13$4jG9hbh5iO6Z4ah3F2AEBuRJES/Fo9USU5p4GdYQU6vbn4Eb47TBy', NULL, '6O_pnFXZcWMIZPUB_IA_ZYk_xsxVdmA-', 1527148829, 1527345333),
+(33, 'mariangel', 'Natasha', 'Angel', '$2y$13$AzsGoZijqSVkvlZJ4VNpCeqq1T0CSSgmWo0MhNXwp75u.iNX6kwcS', NULL, 'MXQTnIuVgBZNDc0KDVgi2UkXIu_aaE8l', 1527148906, 1527148906),
+(34, 'Типи', 'Типи', 'Дрипи', '$2y$13$y67zksQOfon27iIHY8/n7uuUg.XEtEJiiLsjykL2q4wIBQphxpRdC', NULL, 'i65vAJ62sN01ySKcaQxJm4IEM8CX2cGU', 1527345248, 1527345248);
 
 --
 -- Индексы сохранённых таблиц
@@ -180,19 +190,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `access`
 --
 ALTER TABLE `access`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `note`
 --
 ALTER TABLE `note`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
