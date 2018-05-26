@@ -2,12 +2,16 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\Access;
+use app\models\Note;
+use app\models\User;
+use Yii;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * AccessController implements the CRUD actions for Access model.
@@ -20,8 +24,17 @@ class AccessController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs'  => [
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -62,16 +75,30 @@ class AccessController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate(int $noteId)
     {
-        $model = new Access();
+        $modelNote = Note::findOne($noteId);
+        if ($modelNote->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException('Доступ к разрешениям закрыт');
+        }
+
+        $model          = new Access();
+        $model->note_id = $noteId;
+
+        $users = User::find()
+            ->select('username')
+            ->indexBy('id')
+            ->where(['<>', 'id', Yii::$app->user->id])
+            ->column();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', 'Разрешение успешно добавлено');
+            return $this->redirect(['note/my']);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'users' => $users,
         ]);
     }
 
@@ -105,8 +132,8 @@ class AccessController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        Yii::$app->session->setFlash('success', 'Разрешение успешно удалено');
+        return $this->redirect(['note/my']);
     }
 
     /**

@@ -5,7 +5,6 @@ namespace app\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
-
 /**
  * This is the model class for table "user".
  *
@@ -21,20 +20,20 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property Access[] $accesses
  * @property Note[] $notes
- * 
+ *
  * @mixin TimestampBehavior
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-    
-    const RELATION_NOTES = 'notes';
+
+    const RELATION_NOTES    = 'notes';
     const RELATION_ACCESSES = 'accesses';
-    const SCENARIO_CREATE = 'create';
-    const SCENARIO_UPDATE = 'update';
+    const SCENARIO_CREATE   = 'create';
+    const SCENARIO_UPDATE   = 'update';
 
     public $password;
     public $password_repeat;
-    
+
     /**
      * {@inheritdoc}
      */
@@ -43,12 +42,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return 'user';
     }
 //-----------------------------Задание 1-2-----------------------------------------
-    public function scenarios() 
+
+    public function scenarios()
     {
         return [
             self::SCENARIO_DEFAULT => ['username', 'name', 'surname', 'password', 'password_repeat', 'access_token', 'auth_key'],
-            self::SCENARIO_CREATE => ['username', 'name', 'surname', 'password', 'password_repeat'],
-            self::SCENARIO_UPDATE => ['username', 'name', 'surname'],
+            self::SCENARIO_CREATE  => ['username', 'name', 'surname', 'password', 'password_repeat'],
+            self::SCENARIO_UPDATE  => ['username', 'name', 'surname'],
         ];
     }
 
@@ -66,10 +66,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
-    public function behaviors() 
+    public function behaviors()
     {
         return [
-            TimestampBehavior:: class
+            TimestampBehavior::class,
         ];
     }
 //---------------------------------Задание 4-------------------------------------
@@ -78,8 +78,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         if (!parent::beforeSave($insert)) {
             return false;
-        } 
-        if($this->password){
+        }
+        if ($this->password) {
             $this->password_hash = \Yii::$app->getSecurity()->generatePasswordHash($this->password);
         }
         if ($this->isNewRecord) {
@@ -96,16 +96,16 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'username' => 'Username',
-            'name' => 'Name',
-            'surname' => 'Surname',
-            'password' => 'Password',
+            'id'              => 'ID',
+            'username'        => 'Username',
+            'name'            => 'Name',
+            'surname'         => 'Surname',
+            'password'        => 'Password',
             'password_repeat' => 'Confirm Password',
-            'access_token' => 'Access Token',
-            'auth_key' => 'Auth Key',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'access_token'    => 'Access Token',
+            'auth_key'        => 'Auth Key',
+            'created_at'      => 'Created At',
+            'updated_at'      => 'Updated At',
         ];
     }
 
@@ -125,7 +125,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->hasMany(Note::class, ['creator_id' => 'id']);
     }
 
-     /**
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getAccessedNotes()
@@ -145,7 +145,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
 //-----------------------------Задание 5-----------------------------------------
 
-     /**
+    /**
      * Finds user by username
      *
      * @param string $username

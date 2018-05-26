@@ -15,7 +15,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property Access[] $accesses
  * @property User $creator
- * 
+ *
  * @mixin TimestampBehavior
  */
 class Note extends \yii\db\ActiveRecord
@@ -46,17 +46,15 @@ class Note extends \yii\db\ActiveRecord
         ];
     }
 
-//-----------------------------Задание 1-----------------------------------------
     public function behaviors()
     {
         return [
             [
-                'class' => TimestampBehavior::class,
-                'updatedAtAttribute' => false
+                'class'              => TimestampBehavior::class,
+                'updatedAtAttribute' => false,
             ],
         ];
     }
-//-------------------------------------------------------------------------------
 
     /**
      * {@inheritdoc}
