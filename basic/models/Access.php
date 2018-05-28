@@ -18,7 +18,7 @@ class Access extends \yii\db\ActiveRecord
 {
     const RELATION_USER = 'user';
     const RELATION_NOTE = 'note';
-    
+
     /**
      * {@inheritdoc}
      */
@@ -30,6 +30,7 @@ class Access extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
     public function rules()
     {
         return [
@@ -46,7 +47,7 @@ class Access extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id'      => 'ID',
             'note_id' => 'Note ID',
             'user_id' => 'User ID',
         ];

@@ -39,12 +39,13 @@ echo Nav::widget([
     'options' => ['class' => 'navbar-nav navbar-right '],
     'items'   => [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-        ['label' => 'USERS', 'url' => ['/user/index']],
-        ['label' => 'NOTES', 'url' => ['/note/index']],
-        ['label' => 'ACCESS', 'url' => ['/access/index']],
-        ['label' => 'TEST', 'url' => ['/test/index']],
+        //['label' => 'About', 'url' => ['/site/about']],
+        //['label' => 'Contact', 'url' => ['/site/contact']],
+        //['label' => 'USERS', 'url' => ['/user/index']],
+        ['label' => 'New Note', 'url' => ['/note/create']],
+        ['label' => 'Notes', 'url' => ['/note/my']],
+        //['label' => 'ACCESS', 'url' => ['/access/index']],
+        //['label' => 'TEST', 'url' => ['/test/index']],
 
         Yii::$app->user->isGuest ? (
             ['label' => 'Login', 'url' => ['/site/login']]

@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\Note;
+use Yii;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * NoteController implements the CRUD actions for Note model.
@@ -20,8 +22,17 @@ class NoteController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs'  => [
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -33,15 +44,17 @@ class NoteController extends Controller
      * Lists all Note models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionMy()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Note::find(),
+            'query' => Note::find()->byCreator(Yii::$app->user->id),
         ]);
 
-        $dataProvider->pagination->pageSize = 10;
+        $dataProvider->pagination->pageSize = 5;
+        $dataProvider->sort->defaultOrder   = ['id' => SORT_DESC];
 
-        return $this->render('index', [
+        return $this->render('my', [
+            //'searchModel'  => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -54,8 +67,10 @@ class NoteController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -66,10 +81,12 @@ class NoteController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Note();
+        $model             = new Note();
+        $model->creator_id = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', 'Заметка успешно создана');
+            return $this->redirect(['my']);
         }
 
         return $this->render('create', [
@@ -88,8 +105,13 @@ class NoteController extends Controller
     {
         $model = $this->findModel($id);
 
+        if ($model->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException('Доступ к изменению заметки запрещен');
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', 'Заметка успешно изменена');
+            return $this->redirect(['my']);
         }
 
         return $this->render('update', [
@@ -106,9 +128,16 @@ class NoteController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        if ($model->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException('Доступ к удалению заметки запрещен');
+        }
+        $model->delete();
+
+        Yii::$app->session->setFlash('success', 'Заметка успешно удалена');
+
+        return $this->redirect(['my']);
     }
 
     /**
