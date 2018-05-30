@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Note;
+use app\models\Access;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -50,7 +51,7 @@ class NoteController extends Controller
             'query' => Note::find()->byCreator(Yii::$app->user->id),
         ]);
 
-        $dataProvider->pagination->pageSize = 5;
+        $dataProvider->pagination->pageSize = 10;
         $dataProvider->sort->defaultOrder   = ['id' => SORT_DESC];
 
         return $this->render('my', [
@@ -60,6 +61,47 @@ class NoteController extends Controller
     }
 
     /**
+     * Lists all Note models.
+     * @return mixed
+     */
+    public function actionShared()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Note::find()
+            ->byCreator(Yii::$app->user->id)
+            ->innerJoinWith(Note::RELATION_ACCESSES)
+        ]);
+
+        $dataProvider->pagination->pageSize = 15;
+        $dataProvider->sort->defaultOrder   = ['id' => SORT_DESC];
+
+        return $this->render('shared', [
+            //'searchModel'  => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists all Note models.
+     * @return mixed
+     */
+    public function actionAccessed()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Note::find()
+            ->innerJoinWith(Note::RELATION_ACCESSES)
+            ->where(['user_id' =>Yii::$app->user->id])
+        ]);
+
+        $dataProvider->pagination->pageSize = 15;
+        $dataProvider->sort->defaultOrder   = ['id' => SORT_DESC];
+
+        return $this->render('accessed', [
+            //'searchModel'  => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    /**
      * Displays a single Note model.
      * @param integer $id
      * @return mixed
@@ -67,10 +109,21 @@ class NoteController extends Controller
      */
     public function actionView($id)
     {
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => Note::find()
+            ->byCreator(Yii::$app->user->id)->where(['note.id' => $id])
+            ->innerJoinWith(Note::RELATION_ACCESSES),
+
+        ]);
+        
         $model = $this->findModel($id);
+        //$modelAccess = Access::find()->where(['note.id' => $id]);
+        //_end($dataProvider);
 
         return $this->render('view', [
             'model' => $model,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

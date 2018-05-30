@@ -6,6 +6,10 @@ use app\models\Test;
 use yii\base\BaseObject;
 use yii\db\Query;
 use yii\web\Controller;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\VarDumper;
+use yii\db\Connection;
 
 class A extends BaseObject
 {
@@ -25,6 +29,16 @@ class TestController extends Controller
 {
     public function actionIndex()
     {
+        _end(\Yii::t('yii', 'Login require {params}', ['params' => 'параметры']));
+
+        //\Yii::setAlias('@wayToHome', 'C:/home');
+        // _end(\Yii::$aliases);
+
+        //_end(\Yii::getAlias('@wayToHome'));
+
+        //_end(\Yii::getAlias('@webroot'));
+
+        //_end(\yii\helpers\Url::toRoute(['note/view', 'id' => 23]));
 
         //-------------------Кэширование-----------------------
         /*
