@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\search\NoteSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title                   = 'Мои заметки';
+$this->title                   = 'Доступные мне заметки';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="note-index">
@@ -16,18 +16,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin();?>
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?=Html::a('Создать новую заметку', ['create'], ['class' => 'btn btn-success'])?>
-    </p>
+
 
     <?=GridView::widget([
     'dataProvider' => $dataProvider,
-    'filterModel'  => $searchModel,
+    //'filterModel'  => $searchModel,
     'columns'      => [
         [
             'attribute' => 'text',
             'label'     => 'Текст заметки',
         ],
+        [
+            'attribute' => 'creator.name',
+            'label'     => 'Имя автора',
+        ],
+        //'creator.name',
+
         [
             'attribute' => 'created_at',
             'label' => 'Заметка создана',
@@ -35,12 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         [
             'class'    => 'yii\grid\ActionColumn',
-            'template' => '{view} {update} {share} {delete} ',
-            'buttons'  => [
-                'share' => function ($url, $model, $key) {
-                    return Html::a(\yii\bootstrap\Html::icon('share'), ['access/create', 'noteId' => $model->id]);
-                },
-            ],
+            'template' => '{view}',
         ],
     ],
 ]);?>

@@ -6,7 +6,6 @@ use app\models\Access;
 use app\models\Note;
 use app\models\User;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -37,37 +36,10 @@ class AccessController extends Controller
                 'class'   => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'deleteAll' => ['POST'],
                 ],
             ],
         ];
-    }
-
-    /**
-     * Lists all Access models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Access::find(),
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Access model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
     }
 
     /**
@@ -78,7 +50,7 @@ class AccessController extends Controller
     public function actionCreate(int $noteId)
     {
         $modelNote = Note::findOne($noteId);
-        if ($modelNote->creator_id != Yii::$app->user->id) {
+        if (!$modelNote || $modelNote->creator_id != Yii::$app->user->id) {
             throw new ForbiddenHttpException('Доступ к разрешениям закрыт');
         }
 
@@ -101,25 +73,25 @@ class AccessController extends Controller
             'users' => $users,
         ]);
     }
-
+    //------------------------------------------------
     /**
-     * Updates an existing Access model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Deletes an existing Access model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionDeleteAll($noteId)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        
+        $modelNote = Note::findOne($noteId);
+        if (!$modelNote || $modelNote->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException('Доступ к разрешениям закрыт');
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        $modelNote->unlinkAll(Note::RELATION_ACCESSED_USERS, true);
+        
+        Yii::$app->session->setFlash('success', 'Разрешения успешно удалены');
+        return $this->redirect(['note/shared']);
     }
 
     /**
@@ -131,8 +103,16 @@ class AccessController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+
+        $model = $this->findModel($id);
+
+        if ($model->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException('Доступ к удалению заметки запрещен');
+        }
+        $model->delete();
+
         Yii::$app->session->setFlash('success', 'Разрешение успешно удалено');
+
         return $this->redirect(['note/my']);
     }
 

@@ -4,15 +4,17 @@ $params = require __DIR__ . '/params.php';
 $db     = require __DIR__ . '/db.php';
 
 $config = [
-    'id'         => 'basic',
-    'language'   => 'ru',
-    'basePath'   => dirname(__DIR__),
-    'bootstrap'  => ['log'],
-    'aliases'    => [
+    'id'             => 'basic',
+    'basePath'       => dirname(__DIR__),
+    'language'       => 'ru-RU',
+    'sourceLanguage' => 'en-US',
+    'timeZone'       => 'Europe/Moscow',
+    'bootstrap'      => ['log'],
+    'aliases'        => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'components' => [
+    'components'     => [
         'request'      => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'JNYpqh08n_0kpUddRlQYEMVHLXhyAOiG',
@@ -56,6 +58,23 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName'  => false,
             'rules'           => [
+                //new \yii\web\UrlRule,
+                //'note/<id:\d+>'                => 'note/update',
+                'user/<id:\d+>'                => 'user/view',
+                'user/update/<id:\d+>'         => 'user/update',
+                //'access/create/<noteId:\d+>'   => 'access/create',
+                '<controller:[\w-]+>/<id:\d+>' => '<controller>/view',
+                //'noteview'                     => 'note/view',
+                //'<controller:[\w-]+>/<noteId:\d+>' => '<controller>/create',
+
+            ],
+        ],
+        'i18n' => [
+            'translations' => [
+                'yii*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
+                ],
             ],
         ],
         'assetManager' => [
@@ -67,7 +86,7 @@ $config = [
             'prop'  => 'Just Do It!',
         ],
     ],
-    'params'     => $params,
+    'params'         => $params,
 
 ];
 
