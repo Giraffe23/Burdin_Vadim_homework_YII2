@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 26 2018 г., 21:34
+-- Время создания: Май 30 2018 г., 22:32
 -- Версия сервера: 5.7.20
 -- Версия PHP: 7.2.0
 
@@ -41,15 +41,23 @@ CREATE TABLE `access` (
 INSERT INTO `access` (`id`, `note_id`, `user_id`) VALUES
 (1, 5, 1),
 (2, 2, 1),
-(4, 18, 2),
-(5, 12, 32),
-(6, 20, 32),
 (8, 8, 1),
 (11, 17, 21),
-(12, 20, 19),
 (13, 16, 30),
-(14, 1, 25),
-(15, 23, 20);
+(16, 6, 1),
+(17, 6, 1),
+(18, 6, 1),
+(21, 31, 1),
+(22, 31, 1),
+(23, 31, 3),
+(24, 31, 7),
+(26, 32, 6),
+(27, 32, 20),
+(28, 32, 30),
+(34, 18, 2),
+(37, 23, 2),
+(45, 29, 2),
+(48, 29, 5);
 
 -- --------------------------------------------------------
 
@@ -100,11 +108,22 @@ INSERT INTO `note` (`id`, `text`, `creator_id`, `created_at`) VALUES
 (12, 'testing behaviors', 1, 1526981930),
 (16, 'Круто!!!', 1, 1527278735),
 (17, 'successfully loaded', 1, 1527279700),
-(18, 'wonderful', 1, 1527279734),
+(18, 'wonderfully', 1, 1527279734),
 (20, 'Что-то пошло не так!', 1, 1527347701),
 (21, 'Note from Luntik', 21, 1527350439),
 (22, 'balance', 1, 1527354398),
-(23, 'Guten abend, mein Freund!', 1, 1527355935);
+(23, 'Guten abend, mein Freund!', 1, 1527355935),
+(25, 'привет', 1, 1527542602),
+(26, 'привет2-2', 1, 1527542647),
+(27, 'Yes', 1, 1527580884),
+(28, 'hi!', 21, 1527585654),
+(29, 'fun!fun!fun!', 1, 1527585763),
+(30, 'true', 21, 1527585885),
+(31, 'speak-spoke-spoken', 21, 1527622283),
+(32, 'duck-duck-goose', 1, 1527624050),
+(33, 'one more time!', 1, 1527695320),
+(36, 'БТФ', 1, 1527703667),
+(37, 'ghgh', 1, 1527708466);
 
 -- --------------------------------------------------------
 
@@ -190,13 +209,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `access`
 --
 ALTER TABLE `access`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT для таблицы `note`
 --
 ALTER TABLE `note`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT для таблицы `user`
